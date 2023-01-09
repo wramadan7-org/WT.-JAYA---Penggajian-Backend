@@ -1,13 +1,22 @@
 const httpStatus = require('http-status');
 
 const karyawanList = (req, res) => {
-  res.send({
-    code: 200,
-    data: {
-      nama: 'Wahyu Ramadan',
-      umur: 22,
-    },
-  }).status(httpStatus.OK);
+  res.sendWrapped(
+    'List Karyawan',
+    [
+      {
+        nama: 'Wahyu Ramadan',
+        umur: 20,
+        posisi: 'karyawan pabrik',
+      },
+      {
+        nama: 'Hanijah',
+        umur: 32,
+        posisi: 'dapur dan kebersihan',
+      },
+    ],
+    httpStatus.OK,
+  );
 };
 
 module.exports = {
