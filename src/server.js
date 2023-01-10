@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const httpStatus = require('http-status');
+const BaseError = require('./helpers/baseError');
+const { errorConverter, errorHandler } = require('./middlewares/errorHandler');
 const routesV1 = require('./routes/v1/index');
 
 const app = express();
@@ -24,5 +26,13 @@ app.response.sendWrapped = function (message, data, statusCode = httpStatus.OK) 
 app.listen(NODE_PORT, () => {
   console.log(`App listen on port ${NODE_PORT}`);
 });
+
+app.use((req, res, next) => {
+  next(new BaseError('Not found', httpStatus.NOT_FOUND));
+});
+
+app.use(errorConverter);
+
+app.use(errorHandler);
 
 module.exports = app;
