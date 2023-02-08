@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const httpStatus = require('http-status');
+const morgan = require('./configurations/morgan');
+const logger = require('./configurations/logger');
 const BaseError = require('./helpers/baseError');
 const { errorConverter, errorHandler } = require('./middlewares/errorHandler');
 const routesV1 = require('./routes/v1/index');
@@ -13,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.options('*', cors());
+app.use(morgan.successHandler);
+app.use(morgan.errorHandler);
 app.use('/v1', routesV1);
 
 app.response.sendWrapped = function (message, data, statusCode = httpStatus.OK) {
@@ -24,7 +28,7 @@ app.response.sendWrapped = function (message, data, statusCode = httpStatus.OK) 
 };
 
 app.listen(NODE_PORT, () => {
-  console.log(`App listen on port ${NODE_PORT}`);
+  logger.info(`App listen on port ${NODE_PORT}`);
 });
 
 app.use((req, res, next) => {
