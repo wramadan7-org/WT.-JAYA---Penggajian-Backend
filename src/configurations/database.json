@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "rama2000",
+    "database": "wtjaya_development",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "rama2000",
+    "database": "wtjaya_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "rama2000",
+    "database": "wtjaya_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
