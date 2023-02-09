@@ -25,30 +25,47 @@ const findUserByEmailOrPhone = async (email, phone) => {
 };
 
 /**
- * Service helper to find User by Email or Phone where not the own Email or Phone in ID
+ * Service helper to find User by Email where not the own Email in ID
  * @param {Number} id
  * @param {String} email
- * @param {String} phone
  * @returns Object
  */
-const findAnotherUserByEmailOrPhone = async (id, email, phone) => {
+const findAnotherUserByEmailService = async (id, email) => {
   const user = await User.findOne({
     where: {
       [Op.and]: [
         {
           id: {
-            [Op.not]: id,
+            [Op.ne]: id,
           },
         },
         {
-          [Op.or]: [
-            {
-              email,
-            },
-            {
-              phone,
-            },
-          ],
+          email,
+        },
+      ],
+    },
+  });
+
+  return user;
+};
+
+/**
+ * Service helper to find User by Phone where not the own Phone in ID
+ * @param {Number} id
+ * @param {String} phone
+ * @returns Object
+ */
+const findAnotherUserByPhoneService = async (id, phone) => {
+  const user = await User.findOne({
+    where: {
+      [Op.and]: [
+        {
+          id: {
+            [Op.ne]: id,
+          },
+        },
+        {
+          phone,
         },
       ],
     },
@@ -59,5 +76,6 @@ const findAnotherUserByEmailOrPhone = async (id, email, phone) => {
 
 module.exports = {
   findUserByEmailOrPhone,
-  findAnotherUserByEmailOrPhone,
+  findAnotherUserByEmailService,
+  findAnotherUserByPhoneService,
 };
