@@ -74,9 +74,25 @@ const karyawanUpdateByIdController = catchAsync(async (req, res) => {
   res.sendWrapped(`Update ID ${id} successfully`, responseKaryawan, httpStatus.OK);
 });
 
+/**
+ * Delete karyawan by ID
+ */
+const karyawanDeleteByIdController = catchAsync(async (req, res) => {
+  const { id } = req.params;
+
+  const karyawan = await karyawanService.getKaryawanByIdAndRoleService(id);
+
+  if (!karyawan) throw new BaseError(`Karyawan with ID ${id} not found`, httpStatus.NOT_FOUND);
+
+  await karyawanService.deleteKaryawanByIdService(id);
+
+  res.sendWrapped(`Delete karyawan with ID ${id} successfully`, karyawan, httpStatus.OK);
+});
+
 module.exports = {
   karyawanCreateController,
   karyawanAllController,
   karyawanByIdOrRoleController,
   karyawanUpdateByIdController,
+  karyawanDeleteByIdController,
 };

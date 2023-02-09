@@ -34,7 +34,7 @@ const getKaryawanByIdAndRoleService = async (id, role) => {
  * Service update karyawan by ID
  * @param {Number} id
  * @param {Object} data
- * @returns Object
+ * @returns Array
  */
 const updateKaryawanByIdService = async (id, data) => {
   const karyawan = await User.update(data, {
@@ -46,9 +46,21 @@ const updateKaryawanByIdService = async (id, data) => {
   return karyawan;
 };
 
+/**
+ * Service delete karyawan by ID
+ * @param {Number} id
+ * @returns Object
+ */
+const deleteKaryawanByIdService = async (id) => {
+  const karyawan = await User.destroy({ where: { id } });
+
+  return karyawan;
+};
+
 module.exports = {
   createKaryawanService,
   getAllKaryawanService,
   getKaryawanByIdAndRoleService,
   updateKaryawanByIdService,
+  deleteKaryawanByIdService,
 };

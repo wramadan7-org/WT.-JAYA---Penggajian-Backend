@@ -9,5 +9,6 @@ router.post('/', validation(createKaryawanValidation), karyawanController.karyaw
 router.get('/', karyawanController.karyawanAllController);
 router.get('/:id', karyawanController.karyawanByIdOrRoleController);
 router.patch('/:id', karyawanController.karyawanUpdateByIdController);
+router.delete('/:id', karyawanController.karyawanDeleteByIdController);
 
 module.exports = router;
