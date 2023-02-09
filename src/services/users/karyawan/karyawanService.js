@@ -7,9 +7,9 @@ const { User } = require('../../../models');
  * @returns Object
  */
 const createKaryawanService = async (data) => {
-  const user = await User.create(data);
+  const karyawan = await User.create(data);
 
-  return user;
+  return karyawan;
 };
 
 /**
@@ -24,14 +24,31 @@ const getAllKaryawanService = () => User.findAll();
  * @param {String} role
  * @returns Object
  */
-const getKaryawanByIdAndRole = async (id, role) => {
-  const user = role ? User.findOne({ where: { id, role } }) : User.findOne({ where: { id } });
+const getKaryawanByIdAndRoleService = async (id, role) => {
+  const karyawan = role ? User.findOne({ where: { id, role } }) : User.findOne({ where: { id } });
 
-  return user;
+  return karyawan;
+};
+
+/**
+ * Service update karyawan by ID
+ * @param {Number} id
+ * @param {Object} data
+ * @returns Object
+ */
+const updateKaryawanByIdService = async (id, data) => {
+  const karyawan = await User.update(data, {
+    where: {
+      id,
+    },
+  });
+
+  return karyawan;
 };
 
 module.exports = {
   createKaryawanService,
   getAllKaryawanService,
-  getKaryawanByIdAndRole,
+  getKaryawanByIdAndRoleService,
+  updateKaryawanByIdService,
 };

@@ -7,6 +7,7 @@ const router = Router();
 
 router.post('/', validation(createKaryawanValidation), karyawanController.karyawanCreateController);
 router.get('/', karyawanController.karyawanAllController);
-router.get('/:id', karyawanController.karyawanByIdOrRole);
+router.get('/:id', karyawanController.karyawanByIdOrRoleController);
+router.patch('/:id', karyawanController.karyawanUpdateByIdController);
 
 module.exports = router;
