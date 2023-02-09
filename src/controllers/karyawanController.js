@@ -60,6 +60,30 @@ const karyawanUpdateByIdController = catchAsync(async (req, res) => {
 
   if (!findKaryawan) throw new BaseError(`Karyawan with ID ${id} not found`, httpStatus.NOT_FOUND);
 
+  // Check the another email
+  if (requestBody.email) {
+    if (requestBody.email !== findKaryawan.email) {
+      const checkEmail = await helperService.findAnotherUserByEmailService(
+        findKaryawan.id,
+        requestBody.email,
+      );
+
+      if (checkEmail) throw new BaseError('Email already exist', httpStatus.CONFLICT);
+    }
+  }
+
+  // Check the another phone
+  if (requestBody.phone) {
+    if (requestBody.phone !== findKaryawan.phone) {
+      const checkPhone = await helperService.findAnotherUserByPhoneService(
+        findKaryawan.id,
+        requestBody.phone,
+      );
+
+      if (checkPhone) throw new BaseError('Phone already exist', httpStatus.CONFLICT);
+    }
+  }
+
   // Assign key value
   const data = Object.assign(findKaryawan, requestBody);
   const { dataValues } = data;
