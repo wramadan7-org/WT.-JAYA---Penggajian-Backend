@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const BaseError = require('../helpers/baseError');
 const catchAsync = require('../helpers/catchAsync');
+const bcrypt = require('../helpers/bcrypt');
 const karyawanService = require('../services/users/karyawan/karyawanService');
 const helperService = require('../services/serviceHelper');
 
@@ -9,14 +10,26 @@ const helperService = require('../services/serviceHelper');
  */
 const karyawanCreateController = catchAsync(async (req, res) => {
   const requestBody = req.body;
-  const { email, phone } = requestBody;
+  const { email, phone, password } = requestBody;
 
-  // Check the email and phone is exist or not
-  const checkUser = await helperService.findUserByEmailOrPhone(email, phone);
+  // Check the email is exist or not
+  const checkUser = await helperService.findUserByEmail(email);
 
-  if (checkUser) throw new BaseError('Email or Phone already exist', httpStatus.BAD_REQUEST);
+  if (checkUser) throw new BaseError('Email already exist', httpStatus.BAD_REQUEST);
 
-  const karyawan = await karyawanService.createKaryawanService(requestBody);
+  // Check the email is exist or not
+  const checkPhone = await helperService.findUserByPhone(email);
+
+  if (checkPhone) throw new BaseError('Phone already exist', httpStatus.BAD_REQUEST);
+
+  const hash = await bcrypt.hashingPassword(password);
+
+  const data = {
+    ...requestBody,
+    password: hash,
+  };
+
+  const karyawan = await karyawanService.createKaryawanService(data);
 
   res.sendWrapped('Create user', karyawan, httpStatus.CREATED);
 });
