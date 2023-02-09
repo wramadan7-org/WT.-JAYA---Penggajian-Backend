@@ -2,12 +2,19 @@ const httpStatus = require('http-status');
 const BaseError = require('../helpers/baseError');
 const catchAsync = require('../helpers/catchAsync');
 const karyawanService = require('../services/users/karyawan/karyawanService');
+const helperService = require('../services/serviceHelper');
 
 /**
  * Create karyawan
  */
 const karyawanCreateController = catchAsync(async (req, res) => {
   const requestBody = req.body;
+  const { email, phone } = requestBody;
+
+  // Check the email and phone is exist or not
+  const checkUser = await helperService.findUserByEmailOrPhone(email, phone);
+
+  if (checkUser) throw new BaseError('Email or Phone already exist', httpStatus.BAD_REQUEST);
 
   const karyawan = await karyawanService.createKaryawanService(requestBody);
 
@@ -29,6 +36,7 @@ const karyawanByIdOrRoleController = catchAsync(async (req, res) => {
   const { id, role } = req.params;
   let karyawan;
 
+  // If have param role then update spesifict value with that role
   if (role) {
     karyawan = await karyawanService.getKaryawanByIdAndRoleService(id, role);
   } else {
