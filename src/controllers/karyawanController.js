@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { BaseError } = require('sequelize');
+const BaseError = require('../helpers/baseError');
 const catchAsync = require('../helpers/catchAsync');
 const karyawanService = require('../services/users/karyawan/karyawanService');
 
