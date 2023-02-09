@@ -4,20 +4,27 @@ const { User } = require('../models');
 /**
  * Service helper to find User by Email or Phone
  * @param {String} email
+ * @returns Object
+ */
+const findUserByEmail = async (email) => {
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  return user;
+};
+
+/**
+ * Service helper to find User by Phone
  * @param {String} phone
  * @returns Object
  */
-const findUserByEmailOrPhone = async (email, phone) => {
+const findUserByPhone = async (phone) => {
   const user = await User.findOne({
     where: {
-      [Op.or]: [
-        {
-          email,
-        },
-        {
-          phone,
-        },
-      ],
+      phone,
     },
   });
 
@@ -75,7 +82,8 @@ const findAnotherUserByPhoneService = async (id, phone) => {
 };
 
 module.exports = {
-  findUserByEmailOrPhone,
+  findUserByEmail,
+  findUserByPhone,
   findAnotherUserByEmailService,
   findAnotherUserByPhoneService,
 };
