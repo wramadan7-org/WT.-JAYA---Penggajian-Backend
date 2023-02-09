@@ -6,11 +6,11 @@ const validate = (validations) => async (req, res, next) => {
 
   const errors = validationResult(req);
 
-  if (errors.isEmpty()) {
-    return next();
+  if (!(errors.isEmpty())) {
+    return res.sendWrapped(`${errors.array()[0].msg}`, errors.array(), httpStatus.BAD_REQUEST);
   }
 
-  return res.sendWrapped(`${errors.array()[0].msg}`, errors.array(), httpStatus.BAD_REQUEST);
+  return next();
 };
 
 module.exports = validate;
